@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="left-panel">
+        <div class="upload-icon" onclick="document.getElementById('fileInput').click()">📤 Upload Image</div>
+        <form id="uploadForm" method="POST" action="{{ url_for('main.handle_upload') }}" enctype="multipart/form-data">
+            <input type="file" id="fileInput" name="file" style="display:none;" accept="image/*,.zip">
+            <button type="submit">Predict</button>
+        </form>
+        <div class="info-section" style="background-color: #f9f9f9; padding: 20px; border-radius: 10px;">
+            <h3 style="color: #2c3e50;">Information</h3>
+            <p style="font-size: 16px; line-height: 1.6;">
+                <strong>REMX</strong> is an automated <strong>REM (Random Encounter Model)</strong> tool for Wildlife of India.<br><br>
+                
+                It places motion-sensing cameras in wildlife areas to <strong>count</strong> and also <strong>measure the growth/health</strong> of animals by plotting nearby coordinates and mathematically calculating size and health based on pixels.<br><br>
+                
+                Using <strong>machine learning</strong>, we automate the <strong>max-confidence Bounding Boxes</strong> to get the closest coordinates.<br><br>
+                
+                It takes input as <strong>image(s)</strong> containing animal(s) and outputs the <strong>predicted coordinates</strong> of the animal in a downloadable CSV file.<br><br>
+                
+                <u>The coordinates are displayed in the order:</u><br><br>
+                
+                <strong>x_min</strong> ➔ Leftmost x-coordinate of the bounding box.<br>
+                <strong>y_min</strong> ➔ Topmost y-coordinate of the bounding box.<br>
+                <strong>x_max</strong> ➔ Rightmost x-coordinate of the bounding box.<br>
+                <strong>y_max</strong> ➔ Bottommost y-coordinate of the bounding box.
+            </p>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div id="imageFrame">
+            <img id="predictedImage" onerror="this.onerror=null; this.src='static/images/remx_icon.png';">
+
+        </div>
+        <p id="imageId"></p>
+
+        <table id="scrabbleTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Image ID</th>
+                    <th>Coordinates</th>
+                </tr>
+            </thead>
+            <tbody id="scrabbleBody"></tbody>
+        </table>
+
+        <div style="margin-top: 10px;">
+            <button id="downloadBtn">Download CSV</button>
+            <button id="resetBtn">Reset Table</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const defaultImage = 'static/images/remx_icon.png';
+
+    {% if image_data %}
+    let imageData = {{ image_data|tojson }};
+    sessionStorage.setItem('imageData', JSON.stringify(imageData));
+
+    let scrabbleData = sessionStorage.getItem('scrabbleData') ? JSON.parse(sessionStorage.getItem('scrabbleData')) : [];
+
+    const now = new Date().toLocaleDateString('en-GB');
+    imageData.forEach(img => {
+        const coords = Array.isArray(img.coordinates) ? img.coordinates.join(', ') : 'N/A';
+        const newEntry = { date: now, imageId: img.image_id, coordinates: coords };
+        if (!scrabbleData.some(entry => entry.imageId === img.image_id && entry.coordinates === coords)) {
+            scrabbleData.push(newEntry);
+        }
+    });
+
+    sessionStorage.setItem('scrabbleData', JSON.stringify(scrabbleData));
+    {% else %}
+    let imageData = sessionStorage.getItem('imageData') ? JSON.parse(sessionStorage.getItem('imageData')) : [];
+    let scrabbleData = sessionStorage.getItem('scrabbleData') ? JSON.parse(sessionStorage.getItem('scrabbleData')) : [];
+    {% endif %}
+
+    // Show image if available
+    if (imageData.length > 0) {
+        const img = imageData[0];
+        document.getElementById('imageFrame').style.display = 'block';
+        document.getElementById('predictedImage').src = `/static/uploads/${img.filename}`;
+        if(imageData.length > 1){
+            document.getElementById('imageId').textContent = "This is a zip file, Output is saved below  in CSV file. No Image Output.";
+        }
+        else{
+            document.getElementById('imageId').textContent = `Image ID: ${img.image_id}`;
+        }
+    } else {
+        document.getElementById('predictedImage').src = defaultImage;
+    }
+
+    updateTable();
+
+    function updateTable() {
+        const tbody = document.getElementById('scrabbleBody');
+        tbody.innerHTML = '';
+        scrabbleData.forEach(entry => {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td style="border: 1px solid #ddd; padding: 8px;">${entry.date}</td>
+                             <td style="border: 1px solid #ddd; padding: 8px;">${entry.imageId}</td>
+                             <td style="border: 1px solid #ddd; padding: 8px;">${entry.coordinates}</td>`;
+            tbody.appendChild(row);
+        });
+    }
+
+    function downloadCSV() {
+        if (scrabbleData.length === 0) {
+            alert("No data to download!");
+            return;
+        }
+        const csv = [
+            ['Date', 'Image ID', 'Coordinates'],
+            ...scrabbleData.map(entry => [entry.date, entry.imageId, entry.coordinates])
+        ].map(row => row.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'scrabble_data.csv';
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+
+    function resetTable() {
+        scrabbleData = [];
+        sessionStorage.setItem('scrabbleData', JSON.stringify(scrabbleData));
+        sessionStorage.removeItem('imageData');
+        updateTable();
+        document.getElementById('predictedImage').src = defaultImage;
+        document.getElementById('imageId').textContent = '';
+    }
+
+    document.getElementById('downloadBtn').addEventListener('click', downloadCSV);
+    document.getElementById('resetBtn').addEventListener('click', resetTable);
+</script>
+
+{% endblock %}

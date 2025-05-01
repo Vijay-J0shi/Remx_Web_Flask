@@ -1,0 +1,259 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e5e5cc; /* Light earthy beige for wildlife theme */
+    color: #333;
+}
+
+.main-content {
+    width: 90%;
+    margin: 20px auto;
+}
+
+/* Navigation Bar */
+.navbar {
+    background-color: #2e5e2e; /* Forest green for wildlife theme */
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    color: #f5f5dc; /* Beige text */
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.navbar-links a {
+    color: #f5f5dc; /* Beige text */
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.navbar-links a:hover {
+    color: #d4d4aa; /* Lighter beige on hover */
+}
+
+/* Flash Messages */
+.flash-messages {
+    background-color: #ffcccc;
+    padding: 10px;
+    border: 1px solid #ff6666;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.flash-messages p {
+    margin: 5px 0;
+}
+
+/* Container for Upload and Historic Data */
+.container {
+    display: flex;
+    width: 90%;
+    margin: 20px auto;
+    gap: 20px;
+}
+
+.left-panel, .right-panel {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #8a7a5e; /* Earthy brown border */
+    border-radius: 5px;
+}
+
+/* Upload Page Specific Styles */
+.upload-icon {
+    font-size: 24px;
+    padding: 10px;
+    text-align: center;
+    background-color: #d4c7a5; /* Light earthy tone */
+    cursor: pointer;
+    border: 1px solid #8a7a5e; /* Earthy brown border */
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#uploadForm button {
+    width: 100%;
+    padding: 10px;
+    background-color: #2e5e2e; /* Forest green */
+    color: #f5f5dc; /* Beige text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#uploadForm button:hover {
+    background-color: #1e3e1e; /* Darker green on hover */
+}
+
+#imageFrame {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#predictedImage {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#prevBtn, #nextBtn, #downloadBtn, #resetBtn {
+    padding: 8px 15px;
+    margin: 5px;
+    background-color: #8a7a5e; /* Earthy brown */
+    color: #f5f5dc; /* Beige text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#prevBtn:hover, #nextBtn:hover, #downloadBtn:hover, #resetBtn:hover {
+    background-color: #6a5a3e; /* Darker brown on hover */
+}
+
+#scrabbleTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#scrabbleTable th, #scrabbleTable td {
+    border: 1px solid #8a7a5e; /* Earthy brown border */
+    padding: 10px;
+    text-align: left;
+}
+
+#scrabbleTable th {
+    background-color: #d4c7a5; /* Light earthy tone */
+}
+
+/* Information Section */
+.info-section {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f5f5dc; /* Beige background */
+    border: 1px solid #8a7a5e; /* Earthy brown border */
+    border-radius: 5px;
+}
+
+.info-section h3 {
+    margin-top: 0;
+    color: #2e5e2e; /* Forest green */
+}
+
+/* Historic Data Page Specific Styles */
+h2 {
+    text-align: center;
+    color: #2e5e2e; /* Forest green */
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    display: block;
+}
+
+table thead {
+    background-color: #d4c7a5; /* Light earthy tone */
+    position: sticky;
+    top: 0;
+}
+
+table th, table td {
+    border: 1px solid #8a7a5e; /* Earthy brown border */
+    padding: 10px;
+    text-align: left;
+}
+
+table tr:nth-child(even) {
+    background-color: #f5f5dc; /* Beige background */
+}
+
+/* Login and Register Page Specific Styles */
+.auth-container {
+    width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #8a7a5e; /* Earthy brown border */
+    border-radius: 5px;
+}
+
+.auth-banner {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.auth-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2e5e2e; /* Forest green */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #8a7a5e; /* Earthy brown border */
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.auth-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #2e5e2e; /* Forest green */
+    color: #f5f5dc; /* Beige text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.auth-container button:hover {
+    background-color: #1e3e1e; /* Darker green on hover */
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.auth-link a {
+    color: #2e5e2e; /* Forest green */
+    text-decoration: none;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
