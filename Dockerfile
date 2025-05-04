@@ -14,5 +14,7 @@ COPY run.py /app/run.py
 WORKDIR /app
 EXPOSE 5000
 
-CMD ["python", "/app/run.py"]
+ENV SECRET_KEY=your-secure-key
+ENV AWS_API_URL=http://ec2-13-49-46-41.eu-north-1.compute.amazonaws.com/api/predict/upload
 
+CMD ["python", "/app/run.py"]
